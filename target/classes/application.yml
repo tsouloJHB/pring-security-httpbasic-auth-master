@@ -1,8 +1,8 @@
 spring:
   datasource:
-    username: avnadmin  # Replace with the MySQL username
-    password: AVNS_KaeBFdS8LRzRZoOUiiv  # Replace with the MySQL password
-    url: jdbc:mysql://mysql-28b663be-thabangsoulo-528d.k.aivencloud.com:13016/defaultdb?ssl-mode=REQUIRED  # Use the provided remote MySQL host, port, and database name
+    username: ${DATABASE_USER:avnadmin}
+    password: ${DATABASE_PASSWORD:AVNS_KaeBFdS8LRzRZoOUiiv}
+    url: ${DATABASE_URL:jdbc:mysql://mysql-28b663be-thabangsoulo-528d.k.aivencloud.com:13016/defaultdb?ssl-mode=REQUIRED}
   jpa:
     show-sql: true
     hibernate:
