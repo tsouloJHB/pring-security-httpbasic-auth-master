@@ -1,12 +1,12 @@
 spring:
   datasource:
-    username: root
-    password: ''
-    url: jdbc:mysql://localhost:3306/ewealth
+    username: avnadmin  # Replace with the MySQL username
+    password: AVNS_KaeBFdS8LRzRZoOUiiv  # Replace with the MySQL password
+    url: jdbc:mysql://mysql-28b663be-thabangsoulo-528d.k.aivencloud.com:13016/defaultdb?ssl-mode=REQUIRED  # Use the provided remote MySQL host, port, and database name
   jpa:
     show-sql: true
     hibernate:
-      ddl-auto: update
+      ddl-auto: update  # You can set this to 'validate' or 'none' if you don't want Hibernate to alter the database schema
 logging:
   level:
     org:
