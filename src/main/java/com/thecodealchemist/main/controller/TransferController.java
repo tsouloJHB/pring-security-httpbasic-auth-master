@@ -71,10 +71,29 @@ public ResponseEntity<Map<String, Object>> createTransfer(@Valid @RequestBody Tr
     // Save the updated user balance
     accountRepository.save(account);
 
+    // update the receiver's balance
+    User receiver = accountRepository.findByAccountNumber(transfer.getAccountNumber());
+    System.out.println("receiver: " + receiver);
+    if(receiver != null){
+        System.out.println("reviver received");
+        receiver.setBalance(receiver.getBalance() + transfer.getAmount().longValue());
+        accountRepository.save(receiver);
+        //save as deposit
+        Deposit deposit = new Deposit();
+        deposit.setAmount(transfer.getAmount());
+        deposit.setAccountId(receiver.getId());
+        deposit.setMethod("Transfer");
+        deposit.setReference(transfer.getMyReference());
+        deposit.setDateCreated(transfer.getDateCreated());
+        depositService.saveDeposit(deposit);
+    }
+   
+
     System.out.println("New balance: " + newBalance);
 
     // Set the accountId in the transfer
     transfer.setAccountId(account.getId());
+    transfer.setAccountNumber(account.getAccountNumber());
     System.out.println("Account Name: " + transfer.getAccountName());
 
     // Save the transfer
@@ -96,13 +115,14 @@ public ResponseEntity<Map<String, Object>> createTransfer(@Valid @RequestBody Tr
         // Get the authenticated user's details
         AuthenticatedUser user = (AuthenticatedUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String username = user.getUsername();
-      
+        System.out.println(username);
 
         // Find the user by email or cell number
         User account = accountRepository.findByEmail(username);
-
+        System.out.println(account);
         // Retrieve all transfers associated with this account
         List<Transfer> transfers = transferService.getTransfersByAccountId(account.getId());
+        System.out.println(transfers);
 
         return ResponseEntity.ok(transfers);
     }
@@ -136,6 +156,8 @@ public ResponseEntity<Map<String, Object>> createTransfer(@Valid @RequestBody Tr
         // Update the user's balance
         Long newBalance = account.getBalance() + deposit.getAmount().longValue();
         account.setBalance(newBalance);
+
+      
     
         // Save the updated user balance
         accountRepository.save(account);

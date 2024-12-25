@@ -19,4 +19,5 @@ public class UserDTO {
     private String streetName;
     private String idNumber;
     private String dateOfBirth;
+    
 }

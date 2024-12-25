@@ -5,8 +5,10 @@ import com.thecodealchemist.main.entity.User;
 import com.thecodealchemist.main.model.AuthenticatedUser;
 import com.thecodealchemist.main.repository.UserRepository;
 
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -38,7 +40,9 @@ public class UserService implements UserDetailsService {
             response.put("message", "Cell number is already in use");
             return ResponseEntity.badRequest().body(response);
         }
-
+        long accountNumber = generateAccountNumber();
+        String expiryDate = generateExpiryDate();
+        
         // If no existing email or cell number, proceed with registration
         User u = new User();
         u.setUsername(userDTO.getEmail());
@@ -55,6 +59,9 @@ public class UserService implements UserDetailsService {
         u.setIdNumber(userDTO.getIdNumber());
         u.setDateOfBirth(userDTO.getDateOfBirth());
         u.setBalance(500L);
+        u.setAccountNumber(accountNumber);
+        u.setExpiryDate(expiryDate); 
+        
 
         // Save the user
         userRepository.save(u);
@@ -63,6 +70,26 @@ public class UserService implements UserDetailsService {
         response.put("message", "User created successfully");
         response.put("user", u);
         return ResponseEntity.ok(response);
+    }
+
+    // Method to generate a 12-digit random account number
+    private long generateAccountNumber() {
+        Random rand = new Random();
+        // Ensure the number is exactly 12 digits
+        return 100000000000L + (long)(rand.nextDouble() * 900000000000L);
+    }
+    // Method to generate expiry date in MM/YY format (current month and next year)
+    private String generateExpiryDate() {
+        Calendar calendar = Calendar.getInstance();
+        int currentMonth = calendar.get(Calendar.MONTH) + 1;  // Get current month (1-12)
+        int currentYear = calendar.get(Calendar.YEAR);         // Get current year
+        int nextYear = currentYear + 2;                          // Get next year
+
+        // Format month and year to MM/YY
+        String month = String.format("%02d", currentMonth);  // Ensure month is 2 digits
+        String year = String.format("%02d", nextYear % 100);  // Get last two digits of next year
+
+        return month + "/" + year;
     }
 
         // Login functionality

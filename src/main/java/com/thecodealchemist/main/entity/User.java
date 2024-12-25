@@ -59,6 +59,10 @@ public class User {
 
     @Column(nullable = false)
     private Long balance;
+    @Column(nullable = false)
+    private Long accountNumber;
+    @Column(nullable = false)
+    private String expiryDate;
 
       // Utility method to hash the password
   public String hashPassword(String password) {

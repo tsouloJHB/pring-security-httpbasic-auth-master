@@ -17,6 +17,7 @@ public class TransferService {
     public Transfer saveTransfer(Transfer transfer) {
         return transferRepository.save(transfer);
     }
+    
 
     public List<Transfer> getTransfersByAccountId(Long accountId) {
         return transferRepository.findByAccountId(accountId);

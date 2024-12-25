@@ -40,7 +40,7 @@ public class Transfer {
     private String accountName;
 
     @Column(name = "account_number", nullable = false)
-    private String accountNumber;
+    private Long accountNumber;
 
     @Column(name = "date_created", nullable = false, updatable = false)
     @CreationTimestamp
