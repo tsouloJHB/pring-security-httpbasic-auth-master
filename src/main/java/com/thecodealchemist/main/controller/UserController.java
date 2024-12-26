@@ -42,9 +42,9 @@ public class UserController {
         
         @PostMapping("/login")
         public ResponseEntity<Map<String, Object>> login(@RequestBody LoginDTO loginDto) {
-            System.out.println("Username: " + loginDto.getEmail() + ", Password: " + loginDto.getPassword());
-        
-            User user = userService.login(loginDto.getEmail(), loginDto.getPassword());
+            System.out.println("Username: " + loginDto.getUsername() + ", Password: " + loginDto.getPassword());
+
+            User user = userService.login(loginDto.getUsername(), loginDto.getPassword());
         
             // Create the response map
             Map<String, Object> response = new HashMap<>();
@@ -54,7 +54,7 @@ public class UserController {
                 response.put("user", user);  // You can include user details in the response if needed
                 return ResponseEntity.ok(response);
             } else {
-                response.put("message", "Invalid email or password");
+                response.put("message", "Please enter correct username or password");
                 return ResponseEntity.badRequest().body(response);
             }
         }

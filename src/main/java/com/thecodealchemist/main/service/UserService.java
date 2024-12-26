@@ -98,10 +98,11 @@ public class UserService implements UserDetailsService {
         
             // Check if username is an email address
             if (username.contains("@")) {
-                account = userRepository.findByEmail(username);
+                account = userRepository.findByEmail(username); // Email login
             } else {
-                account = userRepository.findByEmail(username);
+                account = userRepository.findByCellNumber(username); // Cell number login
             }
+            
         
             if (account != null) {
                 // Verify the password using the verifyPassword method
